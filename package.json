@@ -10,9 +10,12 @@
   "author": "Bugra cantepe",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "ejs": "^3.1.8",
     "express": "^4.18.2",
-    "mongoose": "^6.9.0"
+    "express-session": "^1.17.3",
+    "mongoose": "^6.9.0",
+    "slugify": "^1.6.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
