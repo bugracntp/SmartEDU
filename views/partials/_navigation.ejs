@@ -33,39 +33,43 @@
                     <li class="nav-item <%= page_name ==='courses' && 'active' %>">
                         <a class="nav-link" href="/courses">Courses</a>
                     </li>
+                    <% if(userIN) { %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                    </li>
+                        <a class="nav-link <%= page_name ==='courses' && 'active' %>" href="/users/dashboard"">Dashboard</a>
+                    </li> 
+                    <% } %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/contact">Contact</a>
+                        <a class="nav-link <%= page_name ==='contact' && 'active' %>" href="/contact">Contact</a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a
-                            class="hover-btn-new log <%= page_name ==='login' && 'orange' %> mr-2"
-                            href="/login"
-                            data-target="#login"
-                            ><span
-                                ><i
-                                    class="fa fa-sign-in"
-                                    aria-hidden="true"
-                                ></i></span
-                        ></a>
-                    </li>
-                    <li>
-                        <a
-                            class="hover-btn-new log <%= page_name ==='register' && 'orange' %>"
-                            href="/register"
-                            data-target="#signup"
-                            ><span
-                                ><i
-                                    class="fa fa-user-plus"
-                                    aria-hidden="true"
-                                ></i></span
-                        ></a>
-                    </li>
-                </ul>
+                <% if(!userIN) { %>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="hover-btn-new log <%= page_name ==='login' && 'orange' %> mr-2" href="/login" data-target="#login">
+                                <span>
+                                    <i class="fa fa-sign-in" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="hover-btn-new log <%= page_name ==='register' && 'orange' %>" href="/register" data-target="#signup" >
+                                <span>
+                                    <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                </span></a>
+                        </li>
+                    </ul>
+                <% } %>
+                <% if(userIN) { %>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="hover-btn-new log mr-2" href="/users/logout" data-target="#login">
+                                <span>
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                <% } %>
             </div>
         </div>
     </nav>
