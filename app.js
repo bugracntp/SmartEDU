@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const dotenv = require('dotenv').config();
+const flash = require('connect-flash');
 
 // ROUTER imports
 const pageRouter = require('./routers/pageRouters');
@@ -37,9 +38,14 @@ app.use(
         secret: 'my_keyboard_cat', // Buradaki texti değiştireceğiz.
         resave: false,
         saveUninitialized: true,
-        store: MongoStore.create({mongoUrl: process.env.DATABASE_URL}),
+        store: MongoStore.create({ mongoUrl: process.env.DATABASE_URL }),
     })
 ); // for session middleware
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.flashMessages = req.flash();
+    next();
+});
 
 // ROUTER
 app.use('*', (req, res, next) => {

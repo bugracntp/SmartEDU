@@ -44,6 +44,17 @@
 					</div>
 				</div> 
                 <div class="col-lg-9 blog-post-single">
+					<% if (flashMessages) { %>
+                        <% if (flashMessages.success) { %>
+                            <div class="alert alert-success">
+                        <%= flashMessages.success %>
+                        </div>
+                        <% } else if (flashMessages.error) { %>
+                        <div class="alert alert-danger">
+                        <%= flashMessages.error %>
+                        </div>
+                        <% } %>
+                    <% } %>
                     <div class="blog-item">
 						<div class="image-blog">
 							<img src="/images/blog_single.jpg" alt="" class="img-fluid">
