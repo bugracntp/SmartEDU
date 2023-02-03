@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const dotenv = require('dotenv').config();
 
 // ROUTER imports
 const pageRouter = require('./routers/pageRouters');
@@ -9,14 +10,12 @@ const courseRouter = require('./routers/courseRouters');
 const categoryRouters = require('./routers/categoryRouters');
 const userRouters = require('./routers/userRouters');
 
-const port = 3000;
 const app = express();
 
 // DB connection
-const mongoCnnString = 'mongodb://localhost/startedu-db';
 mongoose.set('strictQuery', false);
 mongoose
-    .connect(mongoCnnString, {
+    .connect(process.env.DATABASE_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
@@ -38,7 +37,7 @@ app.use(
         secret: 'my_keyboard_cat', // Buradaki texti değiştireceğiz.
         resave: false,
         saveUninitialized: true,
-        store: MongoStore.create({mongoUrl: mongoCnnString}),
+        store: MongoStore.create({mongoUrl: process.env.DATABASE_URL}),
     })
 ); // for session middleware
 
@@ -52,6 +51,6 @@ app.use('/courses', courseRouter);
 app.use('/categories', categoryRouters);
 app.use('/users', userRouters);
 
-app.listen(port, () => {
-    console.log(`server ${port}' unda başladı.`);
+app.listen(process.env.SERVER_PORT, () => {
+    console.log(`server ${process.env.SERVER_PORT}' unda başladı.`);
 });

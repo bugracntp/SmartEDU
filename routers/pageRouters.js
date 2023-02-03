@@ -10,6 +10,8 @@ router.route('/about').get(pageCountroller.getAboutPage);
 router.route('/register').get(redirectMiddleware, pageCountroller.getRegisterPage);
 router.route('/login').get(redirectMiddleware, pageCountroller.getLoginPage);
 router.route('/contact').get(pageCountroller.getContactPage);
+router.route('/contact').post(pageCountroller.sendEmail);
+
 
 
 
