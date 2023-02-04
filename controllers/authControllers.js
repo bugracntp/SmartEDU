@@ -61,8 +61,11 @@ exports.getDashboardPage = async (req, res) => {
             '-createdAt'
         );
 
+        const users = await UserModel.find({});
+
         res.status(200).render('dashboard', {
             user,
+            users,
             courses,
             categories,
             page_name: 'dashboard',
@@ -72,5 +75,20 @@ exports.getDashboardPage = async (req, res) => {
             status: 'fail',
             error,
         });
+    }
+};
+
+exports.deleteUser = async (req, res) => {
+    try {
+        await UserModel.findByIdAndRemove(req.params.id);
+        await CourseModel.deleteMany({user:req.params.id})
+        req.flash('success', `Your selection has been removed successfully`);
+        res.status(200).redirect('/users/dashboard');
+    } catch (error) {
+        req.flash(
+            'error',
+            `Your selection could not removed successfully`
+        );
+        res.status(200).redirect('/users/dashboard');
     }
 };

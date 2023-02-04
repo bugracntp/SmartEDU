@@ -62,6 +62,7 @@
 					</div><!-- end container -->
 			</div><!-- end section -->
 		<% } %>
+
 		<!-- TEACHERS -->
 		<% if(user.role==='teacher' ) { %>
 			<div class="all-title-box">
@@ -241,6 +242,67 @@
 					</div>
 				</div>
 			</div>
+		<% } %>
+
+		<!-- ADMIN -->
+		<% if(user.role==='admin' ) { %>
+			<div class="all-title-box">
+				<div class="container text-center">
+					<h1>Welcome<span class="m_1">
+							ADMIN
+						</span></h1>
+				</div>
+			</div>
+			<div id="overviews" class="section wb">
+				<div class="container">
+					<% if (flashMessages) { %>
+						<% if (flashMessages.success) { %>
+							<div class="alert alert-success">
+						<%= flashMessages.success %>
+						</div>
+						<% } else if (flashMessages.error) { %>
+						<div class="alert alert-danger">
+						<%= flashMessages.error %>
+						</div>
+						<% } %>
+					<% } %>
+					<div class="row">
+						<div class="col-lg-12 blog-post-single">
+							<div class="blog-author">
+								<div class="author-bio">
+									<h3 class="author_name"><a href="#"><%= user.name %>' courses</a></h3>
+								</div>
+							</div>
+						</div><!-- end col -->
+					</div><!-- end row -->
+					<div class="row mt-5">
+						<table class="table">
+							<thead>
+							  <tr>
+							  <th scope="col">ID#</th>
+							  <th scope="col">Email</th>
+							  <th scope="col">Role</th>
+							  <th scope="col">Delete</th>
+							  </tr>
+							</thead>
+							<tbody>
+						  <% for (let i=0; i< users.length; i++) { %>
+								<% if(users[i].role !== 'admin') {%>
+									<tr>
+										<th scope="row"><%=users[i]._id %></th>
+										<td><%=users[i].email %></td>
+										<td><%=users[i].role %></td>
+										<td><a href="/users/<%= users[i]._id %>?_method=DELETE" 
+										  onclick="return confirm('ARE YOU SURE')"
+										  class="btn btn-danger rounded-0 text-white"><span>DELETE</span></a></td>
+										</tr>
+								<% } %>
+						  <% } %>
+							</tbody>
+						   </table>
+					</div><!-- end row -->
+					</div><!-- end container -->
+			</div><!-- end section -->
 		<% } %>
 	<%- include('partials/_footer.ejs') -%>
 </body>
