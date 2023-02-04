@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+var methodOverride = require('method-override')
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const dotenv = require('dotenv').config();
@@ -46,6 +47,12 @@ app.use((req, res, next) => {
     res.locals.flashMessages = req.flash();
     next();
 });
+app.use(
+    methodOverride('_method', {
+      methods: ['POST', 'GET'],
+    })
+  );
+
 
 // ROUTER
 app.use('*', (req, res, next) => {

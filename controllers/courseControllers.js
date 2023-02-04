@@ -73,11 +73,44 @@ exports.createCourse = async (req, res) => {
             category: req.body.category,
             user: req.session.userID,
         });
-        req.flash("success", `${req.body.name} has been succesfully`);
+        req.flash('success', `${req.body.name} has been succesfully`);
         res.status(201).redirect('courses');
     } catch (error) {
-        req.flash("error", `${req.body.name} has been failed`);
+        req.flash('error', `${req.body.name} has been failed`);
         res.status(400).redirect('courses');
+    }
+};
+
+exports.deleteCourse = async (req, res) => {
+    try {
+        const course = await CourseModel.findOneAndRemove({
+            slug: req.params.slug,
+        });
+        req.flash('success', `${course.name} has been removed successfully`);
+        res.status(200).redirect('/users/dashboard');
+    } catch (error) {
+        req.flash(
+            'error',
+            `${course.name} named course could not removed successfully`
+        );
+        res.status(200).redirect('/users/dashboard');
+    }
+};
+
+exports.updateCourse = async (req, res) => {
+    try {
+        const course = await CourseModel.findOne({ slug: req.params.slug });
+        course.name = req.body.name;
+        course.description = req.body.description;
+        course.category = req.body.category;
+        course.save();
+
+        res.status(200).redirect('/users/dashboard');
+    } catch (error) {
+        res.status(400).json({
+            status: 'fail',
+            error,
+        });
     }
 };
 
@@ -86,11 +119,11 @@ exports.enrollCourse = async (req, res) => {
         const user = await UserModel.findById(req.session.userID);
         await user.courses.push({ _id: req.body.course_id });
         await user.save();
-        req.flash("success", "You enroll the course succesfully");
+        req.flash('success', 'You enroll the course succesfully');
         res.status(200).redirect('/users/dashboard');
     } catch (error) {
-        req.flash("error", "You can not enroll the course succesfully");
-        res.status(400).redirect('/users/dashboard');   
+        req.flash('error', 'You can not enroll the course succesfully');
+        res.status(400).redirect('/users/dashboard');
     }
 };
 
@@ -99,10 +132,10 @@ exports.releaseCourse = async (req, res) => {
         const user = await UserModel.findById(req.session.userID);
         await user.courses.pull({ _id: req.body.course_id });
         await user.save();
-        req.flash("success", "You release the course succesfully");
+        req.flash('success', 'You release the course succesfully');
         res.status(200).redirect('/users/dashboard');
     } catch (error) {
-        req.flash("error", "You can not release the course succesfully");
-        res.status(400).redirect('/users/dashboard'); 
+        req.flash('error', 'You can not release the course succesfully');
+        res.status(400).redirect('/users/dashboard');
     }
 };
