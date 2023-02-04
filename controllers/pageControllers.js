@@ -1,10 +1,21 @@
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv').config();
 
-exports.getMainPage = (req, res) => {
-    console.log(req.session.userID);
+const UserModel = require('../models/User');
+const CourseModel = require('../models/Course');
+
+exports.getMainPage = async (req, res) => {
+    const courses = await CourseModel.find().sort('-createdAt').limit(2);
+    const totalCourses = await CourseModel.find().countDocuments();
+    const totalStudents = await UserModel.countDocuments({ role: 'student' });
+    const totalTeachers = await UserModel.countDocuments({ role: 'teacher' });
+
     res.status(200).render('index', {
         page_name: 'index',
+        courses,
+        totalCourses,
+        totalStudents,
+        totalTeachers,
     });
 };
 
@@ -69,11 +80,13 @@ exports.sendEmail = async (req, res, next) => {
         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
         // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 
-
-        req.flash("success", "We Received your message succesfully");
+        req.flash('success', 'We Received your message succesfully');
         res.status(200).redirect('contact');
     } catch (error) {
-        req.flash("error", `We can not Received your message succesfully. Your error code is ${error}`);
+        req.flash(
+            'error',
+            `We can not Received your message succesfully. Your error code is ${error}`
+        );
         res.status(400).json({
             status: 'fail',
             error,
